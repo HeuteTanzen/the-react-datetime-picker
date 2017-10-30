@@ -6,6 +6,7 @@ import getYear from 'date-fns/get_year'
 import getMonth from 'date-fns/get_month'
 import getDate from 'date-fns/get_date'
 import getHours from 'date-fns/get_hours'
+import isValid from 'date-fns/is_valid'
 import getMinutes from 'date-fns/get_minutes'
 import subDays from 'date-fns/sub_days'
 import addDays from 'date-fns/add_days'
@@ -34,7 +35,7 @@ type State = {
   modalOpen: bool,
   openedView: PossibleView,
   currentDate: StructuredDate,
-  selectedDate: StructuredDate
+  selectedDate?: StructuredDate
 }
 
 export default class DateTimePicker extends Component<Props, State> {
@@ -43,26 +44,39 @@ export default class DateTimePicker extends Component<Props, State> {
 
   constructor (props: Props) {
     super(props)
-    const { selectedDate = new Date() } = props
+    let selectedDate = null
+    const selectedDateObj = props.selectedDate || new Date()
 
-    const currentDate = {
-      year: getYear(selectedDate),
-      month: getMonth(selectedDate),
-      day: getDate(selectedDate),
-      hour: getHours(selectedDate),
-      minute: getMinutes(selectedDate)
+    if (props.selectedDate) {
+      selectedDate = {
+        year: getYear(selectedDateObj),
+        month: getMonth(selectedDateObj),
+        day: getDate(selectedDateObj),
+        hour: getHours(selectedDateObj),
+        minute: getMinutes(selectedDateObj)
+      }
     }
+    const currentDate = {
+      year: getYear(selectedDateObj),
+      month: getMonth(selectedDateObj),
+      day: getDate(selectedDateObj),
+      hour: getHours(selectedDateObj),
+      minute: getMinutes(selectedDateObj)
+    }
+
     this.state = {
       modalOpen: false,
       currentDate,
-      selectedDate: currentDate,
+      selectedDate,
       openedView: 'Days'
     }
   }
 
   formatResult () {
-    const { year, month, day, hour, minute } = this.state.selectedDate
+    const { year, month, day, hour, minute } = this.state.selectedDate || {}
     const date = new Date(year, month, day, hour, minute)
+    if (!isValid(date)) return ''
+
     return this.props.resultFormat
       ? format(date, this.props.resultFormat)
       : date.toISOString()
@@ -181,10 +195,13 @@ export default class DateTimePicker extends Component<Props, State> {
     this.focus()
     const { selectedDate, currentDate } = this.state
     const month = (currentDate.month + 1) % 12
+    const year = selectedDate
+      ? (month === 0 ? selectedDate.year + 1 : selectedDate.year)
+      : currentDate.year
     this.setState({
       currentDate: {
         ...currentDate,
-        year: month === 0 ? selectedDate.year + 1 : selectedDate.year,
+        year,
         month
       }
     })
@@ -286,9 +303,6 @@ export default class DateTimePicker extends Component<Props, State> {
 
   render () {
     const { modalOpen, openedView, selectedDate, currentDate } = this.state
-    const { year, month, day, hour, minute } = selectedDate
-    console.log(this.state, this.formatResult(), 3)
-    const shownDate = new Date(year, month, day, hour, minute)
 
     return (
       <span>
@@ -296,7 +310,7 @@ export default class DateTimePicker extends Component<Props, State> {
           type="text"
           ref={ ref => { this.input = ref } }
           placeholder={ this.props.placeholder }
-          value={ format(shownDate, this.props.resultFormat) }
+          value={ this.formatResult() }
           onFocus={ this.open }
           onBlur={ this.closeSoon }
         />

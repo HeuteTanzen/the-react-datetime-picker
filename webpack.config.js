@@ -35,6 +35,8 @@ module.exports = {
   },
   plugins: [
     // new FlowBabelWebpackPlugin(),
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin({
+      template: 'src/example/template.html'
+    })
   ]
 }
