@@ -12,8 +12,8 @@ import * as styles from './styles'
 import type StructuredDate from './types'
 
 type Props = {
+  selectedDate?: StructuredDate,
   currentDate: StructuredDate,
-  selectedDay?: number,
   onSelect: (number) => mixed,
   onBack: () => mixed,
   onPrevMonth: () => mixed,
@@ -30,7 +30,8 @@ export default class DaysView extends Component<Props, State> {
   }
 
   createWeeks (firstDayOfWeek: number = 0) {
-    const { month, year } = this.props.currentDate
+    const { selectedDate, currentDate } = this.props
+    const { month, year } = currentDate
     const firstDayOfMonth = new Date(year, month, 1)
     const missingDays = getDay(firstDayOfMonth) - firstDayOfWeek
     const daysOfLastMonth = getDaysInMonth(subMonths(firstDayOfMonth, 1))
@@ -41,6 +42,7 @@ export default class DaysView extends Component<Props, State> {
       daysToAddBefore += 7
       daysToAddAfter -= 7
     }
+    const selectedDay = selectedDate ? selectedDate.day : null
     const weeks = [
       [], [], [], [], [], []
     ]
@@ -54,7 +56,7 @@ export default class DaysView extends Component<Props, State> {
     }
     for (let i = 1, l = daysInThisMonth; i <= l; ++i) {
       if (weeks[m].length === 7) ++m
-      weeks[m].push({ day: i, selected: this.props.selectedDay === i })
+      weeks[m].push({ day: i, selected: selectedDay === i, current: currentDate === i })
     }
     for (let i = 1; i <= daysToAddAfter; ++i) {
       if (weeks[m].length === 7) ++m

@@ -12,7 +12,7 @@ import type StructuredDate from './types'
 const MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 type Props = {
-  selectedMonth?: number,
+  selectedDate?: StructuredDate,
   currentDate: StructuredDate,
   onSelect: (number) => mixed,
   onBack?: () => mixed,
@@ -30,7 +30,8 @@ export default class MonthsView extends Component<Props, State> {
   }
 
   render () {
-    const { currentDate, selectedMonth, onSelect, onBack, onPrevYear, onNextYear } = this.props
+    const { currentDate, selectedDate, onSelect, onBack, onPrevYear, onNextYear } = this.props
+    const selectedMonth = selectedDate ? selectedDate.month : null
 
     return (
       <Page>
@@ -44,6 +45,7 @@ export default class MonthsView extends Component<Props, State> {
           { MONTHS.map(month => (
             <Month
               key={ month }
+              current={ month === currentDate.month }
               selected={ month === selectedMonth }
               onClick={ () => onSelect(month) }
             >

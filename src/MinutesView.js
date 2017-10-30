@@ -11,8 +11,8 @@ import * as styles from './styles'
 import type StructuredDate from './types'
 
 type Props = {
+  selectedDate: StructuredDate,
   currentDate: StructuredDate,
-  selectedMinute?: number,
   onSelect: (number) => mixed,
   onBack: () => mixed,
   onPrevHour: () => mixed,
@@ -29,9 +29,10 @@ export default class MinutesView extends Component<Props, State> {
   }
 
   render () {
-    const { currentDate, selectedMinute, onSelect, onBack, onPrevHour, onNextHour } = this.props
+    const { currentDate, selectedDate, onSelect, onBack, onPrevHour, onNextHour } = this.props
     const { year, month, day, hour } = currentDate
     const shownDate = new Date(year, month, day)
+    const selectedMinute = selectedDate ? selectedDate.minute : null
     const paddedHour = paddedStr(hour)
 
     const minutes = []
@@ -51,6 +52,7 @@ export default class MinutesView extends Component<Props, State> {
           { minutes.map(minute => (
             <Minute
               key={ minute }
+              current={ minute === currentDate.minute }
               selected={ minute === selectedMinute }
               onClick={ () => onSelect(minute) }
             >

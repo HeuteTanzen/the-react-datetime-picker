@@ -34,11 +34,7 @@ type State = {
   modalOpen: bool,
   openedView: PossibleView,
   currentDate: StructuredDate,
-  year: number,
-  month: number,
-  day: number,
-  hour: number,
-  minute: number
+  selectedDate: StructuredDate
 }
 
 export default class DateTimePicker extends Component<Props, State> {
@@ -59,13 +55,13 @@ export default class DateTimePicker extends Component<Props, State> {
     this.state = {
       modalOpen: false,
       currentDate,
-      openedView: 'Days',
-      ...currentDate
+      selectedDate: currentDate,
+      openedView: 'Days'
     }
   }
 
   formatResult () {
-    const { year, month, day, hour, minute } = this.state
+    const { year, month, day, hour, minute } = this.state.selectedDate
     const date = new Date(year, month, day, hour, minute)
     return this.props.resultFormat
       ? format(date, this.props.resultFormat)
@@ -94,59 +90,75 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   selectYear (year: number) {
+    const { selectedDate } = this.state
     this.focus()
     this.setState({
-      year,
+      selectedDate: {
+        ...selectedDate,
+        year
+      },
       openedView: 'Months'
     })
   }
 
   @autobind
   selectMonth (month: number) {
-    const { currentDate } = this.state
+    const { selectedDate, currentDate } = this.state
     this.focus()
     this.setState({
-      year: currentDate.year,
-      month,
+      selectedDate: {
+        ...selectedDate,
+        year: currentDate.year,
+        month
+      },
       openedView: 'Days'
     })
   }
 
   @autobind
   selectDay (day: number) {
-    const { currentDate } = this.state
+    const { selectedDate, currentDate } = this.state
     this.focus()
     this.setState({
-      year: currentDate.year,
-      month: currentDate.month,
-      day,
+      selectedDate: {
+        ...selectedDate,
+        year: currentDate.year,
+        month: currentDate.month,
+        day
+      },
       openedView: 'Hours'
     })
   }
 
   @autobind
   selectHour (hour: number) {
-    const { currentDate } = this.state
+    const { selectedDate, currentDate } = this.state
     this.focus()
     this.setState({
-      year: currentDate.year,
-      month: currentDate.month,
-      day: currentDate.day,
-      hour,
+      selectedDate: {
+        ...selectedDate,
+        year: currentDate.year,
+        month: currentDate.month,
+        day: currentDate.day,
+        hour
+      },
       openedView: 'Minutes'
     })
   }
 
   @autobind
   selectMinute (minute: number) {
-    const { currentDate } = this.state
+    const { selectedDate, currentDate } = this.state
     this.focus()
     this.setState({
-      year: currentDate.year,
-      month: currentDate.month,
-      day: currentDate.day,
-      hour: currentDate.hour,
-      minute
+      selectedDate: {
+        ...selectedDate,
+        year: currentDate.year,
+        month: currentDate.month,
+        day: currentDate.day,
+        hour: currentDate.hour,
+        minute
+      }
     })
   }
 
@@ -167,12 +179,12 @@ export default class DateTimePicker extends Component<Props, State> {
   @autobind
   goToNextMonth () {
     this.focus()
-    const { currentDate } = this.state
+    const { selectedDate, currentDate } = this.state
     const month = (currentDate.month + 1) % 12
     this.setState({
       currentDate: {
         ...currentDate,
-        year: month === 0 ? this.state.year + 1 : this.state.year,
+        year: month === 0 ? selectedDate.year + 1 : selectedDate.year,
         month
       }
     })
@@ -273,9 +285,10 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   render () {
-    const { modalOpen, openedView, year, month, day, hour, minute, currentDate } = this.state
+    const { modalOpen, openedView, selectedDate, currentDate } = this.state
+    const { year, month, day, hour, minute } = selectedDate
     console.log(this.state, this.formatResult(), 3)
-    const selectedDate = new Date(year, month, day, hour, minute)
+    const shownDate = new Date(year, month, day, hour, minute)
 
     return (
       <span>
@@ -283,7 +296,7 @@ export default class DateTimePicker extends Component<Props, State> {
           type="text"
           ref={ ref => { this.input = ref } }
           placeholder={ this.props.placeholder }
-          value={ format(selectedDate, this.props.resultFormat) }
+          value={ format(shownDate, this.props.resultFormat) }
           onFocus={ this.open }
           onBlur={ this.closeSoon }
         />
@@ -291,13 +304,13 @@ export default class DateTimePicker extends Component<Props, State> {
           <Page>
             { openedView === 'Years' &&
               <YearsView
-                selectedYear={ this.state.year }
+                selectedDate={ selectedDate }
                 onSelect={ this.selectYear }
+                currentDate={ currentDate }
               /> }
             { openedView === 'Months' &&
               <MonthsView
-                selectedYear={ this.state.year }
-                selectedMonth={ this.state.month }
+                selectedDate={ selectedDate }
                 onBack={ this.goBack }
                 onSelect={ this.selectMonth }
                 currentDate={ currentDate }
@@ -306,9 +319,7 @@ export default class DateTimePicker extends Component<Props, State> {
               /> }
             { openedView === 'Days' &&
               <DaysView
-                selectedYear={ this.state.year }
-                selectedMonth={ this.state.month }
-                selectedDay={ this.state.day }
+                selectedDate={ selectedDate }
                 onBack={ this.goBack }
                 onSelect={ this.selectDay }
                 currentDate={ currentDate }
@@ -317,10 +328,7 @@ export default class DateTimePicker extends Component<Props, State> {
               /> }
             { openedView === 'Hours' &&
               <HoursView
-                selectedYear={ this.state.year }
-                selectedMonth={ this.state.month }
-                selectedDay={ this.state.day }
-                selectedHour={ this.state.hour }
+                selectedDate={ selectedDate }
                 onBack={ this.goBack }
                 onSelect={ this.selectHour }
                 currentDate={ currentDate }
@@ -329,11 +337,7 @@ export default class DateTimePicker extends Component<Props, State> {
               /> }
             { openedView === 'Minutes' &&
               <MinutesView
-                selectedYear={ this.state.year }
-                selectedMonth={ this.state.month }
-                selectedDay={ this.state.day }
-                selectedHour={ this.state.hour }
-                selectedMinute={ this.state.minute }
+                selectedDate={ selectedDate }
                 onBack={ this.goBack }
                 onSelect={ this.selectMinute }
                 currentDate={ currentDate }

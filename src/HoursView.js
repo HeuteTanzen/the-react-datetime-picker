@@ -11,8 +11,8 @@ import * as styles from './styles'
 import type StructuredDate from './types'
 
 type Props = {
+  selectedDate?: StructuredDate,
   currentDate: StructuredDate,
-  selectedHour?: number,
   onSelect: (number) => mixed,
   onBack: () => mixed,
   onPrevDay: () => mixed,
@@ -30,9 +30,10 @@ export default class HoursView extends Component<Props, State> {
   }
 
   render () {
-    const { currentDate, selectedHour, onSelect, onBack, onPrevDay, onNextDay } = this.props
+    const { currentDate, selectedDate, onSelect, onBack, onPrevDay, onNextDay } = this.props
     const { year, month, day } = currentDate
     const shownDate = new Date(year, month, day)
+    const selectedHour = selectedDate ? selectedDate.hour : null
 
     const hours = []
     for (let i = 0; i < 24; ++i) {
@@ -51,6 +52,7 @@ export default class HoursView extends Component<Props, State> {
           { hours.map(hour => (
             <Hour
               key={ hour }
+              current={ hour === currentDate.hour }
               selected={ hour === selectedHour }
               onClick={ () => onSelect(hour) }
             >

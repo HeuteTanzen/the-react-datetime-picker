@@ -8,14 +8,15 @@ import Page from './common/Page'
 import Content from './common/Content'
 import Header from './common/Header'
 import * as styles from './styles'
+import type StructuredDate from './types'
 
 type Props = {
-  selectedYear: number,
+  currentDate: StructuredDate,
+  selectedDate?: StructuredDate,
   onSelect: (number) => mixed
 }
 
 type State = {
-  selectedYear: number,
   pageStartYear: number,
   open: bool
 }
@@ -33,11 +34,9 @@ const getPageStartYear = (currentYear: number): number => (
 export default class YearsView extends Component<Props, State> {
   constructor (props: Props) {
     super(props)
-    const selectedYear = props.selectedYear || getYear(new Date())
     this.state = {
       open: false,
-      selectedYear,
-      pageStartYear: getPageStartYear(selectedYear)
+      pageStartYear: getPageStartYear((props.selectedDate && props.selectedDate.year) || getYear(new Date()))
     }
   }
 
@@ -56,7 +55,8 @@ export default class YearsView extends Component<Props, State> {
   }
 
   render () {
-    const { selectedYear } = this.props
+    const { selectedDate, currentDate } = this.props
+    const selectedYear = selectedDate ? selectedDate.year : currentDate.year
     const years = getYears(this.state.pageStartYear)
     return (
       <Page>
@@ -69,6 +69,7 @@ export default class YearsView extends Component<Props, State> {
           { years.map(year => (
             <Year
               key={ year }
+              current={ year === currentDate.year }
               selected={ year === selectedYear }
               onClick={ () => this.props.onSelect(year) }
             >
