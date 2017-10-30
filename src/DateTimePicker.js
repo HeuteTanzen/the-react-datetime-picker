@@ -21,15 +21,16 @@ import HoursView from './HoursView'
 import MinutesView from './MinutesView'
 import type StructuredDate from './types'
 
+type PossibleView = 'Years' | 'Months' | 'Days' | 'Hours' | 'Minutes'
+
 type Props = {
   selectedDate?: Date,
   placeholder?: string,
-  resultFormat?: string
+  resultFormat?: string,
+  initialView?: PossibleView
 }
 
 const VIEWS = ['Years', 'Months', 'Days', 'Hours', 'Minutes']
-
-type PossibleView = 'Years' | 'Months' | 'Days' | 'Hours' | 'Minutes'
 
 type State = {
   modalOpen: bool,
@@ -68,7 +69,7 @@ export default class DateTimePicker extends Component<Props, State> {
       modalOpen: false,
       currentDate,
       selectedDate,
-      openedView: 'Days'
+      openedView: props.initialView || 'Years'
     }
   }
 

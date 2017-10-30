@@ -11,6 +11,7 @@ render(<div>
     placeholder="DD.MM.YYYY HH:mm"
     resultFormat="DD.MM.YYYY HH:mm"
     selectedDate={ new Date(2017, 11, 24, 18, 0) }
+    initialView="Days"
   />
 </div>, document.getElementById('example1'))
 
@@ -21,5 +22,6 @@ render(<div>
     id="example2"
     placeholder="DD.MM.YYYY HH:mm"
     resultFormat="DD.MM.YYYY HH:mm"
+    initialView="Days"
   />
 </div>, document.getElementById('example2'))
