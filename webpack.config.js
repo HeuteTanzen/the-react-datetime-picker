@@ -1,10 +1,11 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 // const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
 
 module.exports = {
-  entry: __dirname + '/index.js',
+  entry: path.join(__dirname, '/index.js'),
   output: {
-    path: __dirname + '/dist',
+    path: path.join(__dirname, '/dist'),
     filename: 'example_bundle.js'
   },
   module: {
@@ -12,7 +13,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: 'babel-loader'
       },
       {
         test: /\.svg$/,
@@ -25,9 +26,9 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" },
-          { loader: "postcss-loader" }
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'postcss-loader' }
         ]
       }
     ]
