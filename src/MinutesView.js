@@ -52,7 +52,7 @@ export default class MinutesView extends Component<Props, State> {
           { minutes.map(minute => (
             <Minute
               key={ minute }
-              current={ minute === currentDate.minute }
+              current={ currentDate.minute - minute >= 0 && currentDate.minute - minute < 5 }
               selected={ minute === selectedMinute }
               onClick={ () => onSelect(minute) }
             >
