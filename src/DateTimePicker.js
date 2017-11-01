@@ -391,6 +391,9 @@ export default class DateTimePicker extends Component<Props, State> {
 }
 
 const Page = glamorous.div({
+  backgroundColor: '#fff',
   border: '1px solid #999',
-  width: '300px'
+  position: 'absolute',
+  width: '300px',
+  zIndex: 1
 })
