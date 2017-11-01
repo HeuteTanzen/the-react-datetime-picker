@@ -139,18 +139,22 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   @autobind
-  selectDay (day: number) {
+  selectDay (day: number, month?: number, year?: number) {
     const { selectedDate, currentDate } = this.state
     this.focus()
+    const newYear = typeof year === 'undefined' ? currentDate.year : year
+    const newMonth = typeof month === 'undefined' ? currentDate.month : month
     this.setState({
       selectedDate: {
         ...selectedDate,
-        year: currentDate.year,
-        month: currentDate.month,
+        year: newYear,
+        month: newMonth,
         day
       },
       currentDate: {
         ...currentDate,
+        year: newYear,
+        month: newMonth,
         day
       },
       openedView: 'Hours'
