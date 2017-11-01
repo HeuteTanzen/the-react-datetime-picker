@@ -105,11 +105,15 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   selectYear (year: number) {
-    const { selectedDate } = this.state
+    const { selectedDate, currentDate } = this.state
     this.focus()
     this.setState({
       selectedDate: {
         ...selectedDate,
+        year
+      },
+      currentDate: {
+        ...currentDate,
         year
       },
       openedView: 'Months'
@@ -126,6 +130,10 @@ export default class DateTimePicker extends Component<Props, State> {
         year: currentDate.year,
         month
       },
+      currentDate: {
+        ...currentDate,
+        month
+      },
       openedView: 'Days'
     })
   }
@@ -139,6 +147,10 @@ export default class DateTimePicker extends Component<Props, State> {
         ...selectedDate,
         year: currentDate.year,
         month: currentDate.month,
+        day
+      },
+      currentDate: {
+        ...currentDate,
         day
       },
       openedView: 'Hours'
@@ -157,6 +169,10 @@ export default class DateTimePicker extends Component<Props, State> {
         day: currentDate.day,
         hour
       },
+      currentDate: {
+        ...currentDate,
+        hour
+      },
       openedView: 'Minutes'
     })
   }
@@ -172,6 +188,10 @@ export default class DateTimePicker extends Component<Props, State> {
         month: currentDate.month,
         day: currentDate.day,
         hour: currentDate.hour,
+        minute
+      },
+      currentDate: {
+        ...currentDate,
         minute
       }
     })
