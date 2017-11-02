@@ -83,7 +83,6 @@ export default class YearsView extends Component<Props, State> {
 }
 
 const Year = glamorous.div((props) => ({
-  ...styles.pickerItem(props),
-  display: 'block',
-  minWidth: '33.33%'
+  minWidth: '33.33%',
+  ...styles.pickerItem(props)
 }))

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, type ElementRef } from 'react'
-import glamorous from 'glamorous'
+import { ThemeProvider } from 'glamorous'
 import format from 'date-fns/format'
 import getYear from 'date-fns/get_year'
 import getMonth from 'date-fns/get_month'
@@ -19,11 +19,14 @@ import MonthsView from './MonthsView'
 import DaysView from './DaysView'
 import HoursView from './HoursView'
 import MinutesView from './MinutesView'
+import Overlay from './common/Overlay'
+import DEFAULT_THEME from './themes/default'
 import type StructuredDate from './types'
 
 type PossibleView = 'Years' | 'Months' | 'Days' | 'Hours' | 'Minutes'
 
 type Props = {
+  theme?: Object,
   selectedDate?: Date,
   placeholder?: string,
   resultFormat?: string,
@@ -42,6 +45,7 @@ type State = {
 export default class DateTimePicker extends Component<Props, State> {
   input: ElementRef<any>
   soonTimeout: number
+  theme: Object
 
   constructor (props: Props) {
     super(props)
@@ -71,6 +75,13 @@ export default class DateTimePicker extends Component<Props, State> {
       selectedDate,
       openedView: props.initialView || 'Years'
     }
+    this.theme = Object.keys(DEFAULT_THEME).reduce((memo, key) => ({
+      ...memo,
+      [key]: typeof DEFAULT_THEME[key] === 'object' ? {
+        ...DEFAULT_THEME[key],
+        ...(this.props.theme || {})[key]
+      } : DEFAULT_THEME[key] || (this.props.theme || {})[key]
+    }), {})
   }
 
   formatResult () {
@@ -330,70 +341,64 @@ export default class DateTimePicker extends Component<Props, State> {
     const { modalOpen, openedView, selectedDate, currentDate } = this.state
 
     return (
-      <span>
-        <input
-          type="text"
-          ref={ ref => { this.input = ref } }
-          placeholder={ this.props.placeholder }
-          value={ this.formatResult() }
-          onFocus={ this.open }
-          onBlur={ this.closeSoon }
-        />
-        { modalOpen &&
-          <Page>
-            { openedView === 'Years' &&
-              <YearsView
-                selectedDate={ selectedDate }
-                onSelect={ this.selectYear }
-                currentDate={ currentDate }
-              /> }
-            { openedView === 'Months' &&
-              <MonthsView
-                selectedDate={ selectedDate }
-                onBack={ this.goBack }
-                onSelect={ this.selectMonth }
-                currentDate={ currentDate }
-                onPrevYear={ this.goToPrevYear }
-                onNextYear={ this.goToNextYear }
-              /> }
-            { openedView === 'Days' &&
-              <DaysView
-                selectedDate={ selectedDate }
-                onBack={ this.goBack }
-                onSelect={ this.selectDay }
-                currentDate={ currentDate }
-                onPrevMonth={ this.goToPrevMonth }
-                onNextMonth={ this.goToNextMonth }
-              /> }
-            { openedView === 'Hours' &&
-              <HoursView
-                selectedDate={ selectedDate }
-                onBack={ this.goBack }
-                onSelect={ this.selectHour }
-                currentDate={ currentDate }
-                onPrevDay={ this.goToPrevDay }
-                onNextDay={ this.goToNextDay }
-              /> }
-            { openedView === 'Minutes' &&
-              <MinutesView
-                selectedDate={ selectedDate }
-                onBack={ this.goBack }
-                onSelect={ this.selectMinute }
-                currentDate={ currentDate }
-                onPrevHour={ this.goToPrevHour }
-                onNextHour={ this.goToNextHour }
-              /> }
-          </Page>
-        }
-      </span>
+      <ThemeProvider theme={ this.theme }>
+        <span>
+          <input
+            type="text"
+            ref={ ref => { this.input = ref } }
+            placeholder={ this.props.placeholder }
+            value={ this.formatResult() }
+            onFocus={ this.open }
+            onBlur={ this.closeSoon }
+          />
+          { modalOpen &&
+            <Overlay>
+              { openedView === 'Years' &&
+                <YearsView
+                  selectedDate={ selectedDate }
+                  onSelect={ this.selectYear }
+                  currentDate={ currentDate }
+                /> }
+              { openedView === 'Months' &&
+                <MonthsView
+                  selectedDate={ selectedDate }
+                  onBack={ this.goBack }
+                  onSelect={ this.selectMonth }
+                  currentDate={ currentDate }
+                  onPrevYear={ this.goToPrevYear }
+                  onNextYear={ this.goToNextYear }
+                /> }
+              { openedView === 'Days' &&
+                <DaysView
+                  selectedDate={ selectedDate }
+                  onBack={ this.goBack }
+                  onSelect={ this.selectDay }
+                  currentDate={ currentDate }
+                  onPrevMonth={ this.goToPrevMonth }
+                  onNextMonth={ this.goToNextMonth }
+                /> }
+              { openedView === 'Hours' &&
+                <HoursView
+                  selectedDate={ selectedDate }
+                  onBack={ this.goBack }
+                  onSelect={ this.selectHour }
+                  currentDate={ currentDate }
+                  onPrevDay={ this.goToPrevDay }
+                  onNextDay={ this.goToNextDay }
+                /> }
+              { openedView === 'Minutes' &&
+                <MinutesView
+                  selectedDate={ selectedDate }
+                  onBack={ this.goBack }
+                  onSelect={ this.selectMinute }
+                  currentDate={ currentDate }
+                  onPrevHour={ this.goToPrevHour }
+                  onNextHour={ this.goToNextHour }
+                /> }
+            </Overlay>
+          }
+        </span>
+      </ThemeProvider>
     )
   }
 }
-
-const Page = glamorous.div({
-  backgroundColor: '#fff',
-  border: '1px solid #999',
-  position: 'absolute',
-  width: '300px',
-  zIndex: 1
-})

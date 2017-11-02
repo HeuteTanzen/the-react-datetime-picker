@@ -66,8 +66,7 @@ export default class HoursView extends Component<Props, State> {
 }
 
 const Hour = glamorous.div((props) => ({
-  ...styles.pickerItem(props),
   display: 'block',
-  lineHeight: '2em',
-  width: '25%'
+  width: '25%',
+  ...styles.pickerItem(props)
 }))

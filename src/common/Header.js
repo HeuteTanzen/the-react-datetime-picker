@@ -9,30 +9,21 @@ type Props = {
   onPrev?: () => mixed
 }
 
-const Wrap = glamorous.div({
+const Wrap = glamorous.div(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'space-between'
-})
+  justifyContent: 'space-between',
+  ...theme.Header
+}))
 
-const sharedStyles = {
-  cursor: 'pointer',
-  textAlign: 'center',
-  lineHeight: '1.6',
+const Navi = glamorous.div(({ theme }) => ({
+  flexGrow: '1',
+  ...theme.HeaderNavigation
+}))
 
-  ':hover': {
-    background: '#eeeeee'
-  }
-}
-
-const Navi = glamorous.div({
-  ...sharedStyles,
-  flexGrow: '1'
-})
-
-const Title = glamorous.div({
-  ...sharedStyles,
-  flexGrow: '2'
-})
+const Title = glamorous.div(({ theme }) => ({
+  flexGrow: '2',
+  ...theme.HeaderTitle
+}))
 
 const Header = (props: Props) => (
   <Wrap>

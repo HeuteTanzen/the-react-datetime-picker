@@ -126,23 +126,21 @@ export default class DaysView extends Component<Props, State> {
   }
 }
 
-const Content = glamorous.div({
+const Content = glamorous.div(({ theme }) => ({
   boxSizing: 'border-box',
-  border: '1px solid #999',
   display: 'table',
   flexDirection: 'column',
   overflow: 'hidden',
-  width: '100%'
-})
+  width: '100%',
+  ...theme.Body
+}))
 
 const Week = glamorous.div({
   display: 'table-row'
 })
 
 const Day = glamorous.div((props) => ({
-  ...styles.pickerItem(props),
-  color: props.outside ? '#999' : 'inherit',
   display: 'table-cell',
-  lineHeight: '2em',
-  width: `${100 / 7}%`
+  width: `${100 / 7}%`,
+  ...styles.pickerItem(props)
 }))

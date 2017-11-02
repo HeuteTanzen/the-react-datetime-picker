@@ -66,8 +66,6 @@ export default class MinutesView extends Component<Props, State> {
 }
 
 const Minute = glamorous.div((props) => ({
-  ...styles.pickerItem(props),
-  display: 'block',
-  lineHeight: '2em',
-  width: '33.33%'
+  width: '33.33%',
+  ...styles.pickerItem(props)
 }))

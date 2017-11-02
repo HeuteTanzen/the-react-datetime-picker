@@ -59,7 +59,6 @@ export default class MonthsView extends Component<Props, State> {
 }
 
 const Month = glamorous.div((props) => ({
-  ...styles.pickerItem(props),
-  lineHeight: '2em',
-  minWidth: '33.33%'
+  minWidth: '33.33%',
+  ...styles.pickerItem(props)
 }))

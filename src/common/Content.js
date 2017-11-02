@@ -1,13 +1,13 @@
 import glamorous from 'glamorous'
 
-const Content = glamorous.div({
+const Content = glamorous.div(({ theme }) => ({
   boxSizing: 'border-box',
-  border: '1px solid #999',
   display: 'flex',
   justifyContent: 'space-evenly',
   overflow: 'hidden',
   width: '100%',
-  flexWrap: 'wrap'
-})
+  flexWrap: 'wrap',
+  ...theme.Body
+}))
 
 export default Content

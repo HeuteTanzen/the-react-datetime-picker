@@ -1,11 +1,7 @@
 
-export const pickerItem = (props) => ({
-  backgroundColor: props.selected ? '#ddddff' : (props.current ? '#ffffdd' : 'transparent'),
-  cursor: 'pointer',
-  lineHeight: '2em',
-  textAlign: 'center',
-
-  ':hover': {
-    background: '#dedede'
-  }
+export const pickerItem = ({ outside, selected, current, theme }) => ({
+  ...theme.Item,
+  ...(outside ? theme.outsideItem : {}),
+  ...(current ? theme.currentItem : {}),
+  ...(selected ? theme.selectedItem : {})
 })
