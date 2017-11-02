@@ -13,7 +13,7 @@ import format from 'date-fns/format'
 import Page from './common/Page'
 import Header from './common/Header'
 import * as styles from './styles'
-import type StructuredDate from './types'
+import type { StructuredDate } from './types'
 
 type Props = {
   selectedDate?: StructuredDate,

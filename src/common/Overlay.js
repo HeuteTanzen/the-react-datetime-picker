@@ -1,3 +1,4 @@
+// @flow
 import glamorous from 'glamorous'
 
 const Overlay = glamorous.div(({ theme }) => ({

@@ -1,3 +1,4 @@
+// @flow
 export default {
   outsideItem: {
     color: '#999'

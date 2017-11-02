@@ -1,3 +1,4 @@
+// @flow
 export type StructuredDate = {
   year: number,
   month: number,

@@ -8,10 +8,10 @@ import Page from './common/Page'
 import Content from './common/Content'
 import Header from './common/Header'
 import * as styles from './styles'
-import type StructuredDate from './types'
+import type { StructuredDate } from './types'
 
 type Props = {
-  selectedDate: StructuredDate,
+  selectedDate?: StructuredDate,
   currentDate: StructuredDate,
   onSelect: (number) => mixed,
   onBack: () => mixed,

@@ -21,7 +21,7 @@ import HoursView from './HoursView'
 import MinutesView from './MinutesView'
 import Overlay from './common/Overlay'
 import DEFAULT_THEME from './themes/default'
-import type StructuredDate from './types'
+import type { StructuredDate } from './types'
 
 type PossibleView = 'Years' | 'Months' | 'Days' | 'Hours' | 'Minutes'
 
@@ -49,7 +49,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   constructor (props: Props) {
     super(props)
-    let selectedDate = null
+    let selectedDate
     const selectedDateObj = props.selectedDate || new Date()
 
     if (props.selectedDate) {
