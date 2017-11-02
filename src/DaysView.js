@@ -9,7 +9,6 @@ import getDaysInMonth from 'date-fns/get_days_in_month'
 import addMonths from 'date-fns/add_months'
 import subMonths from 'date-fns/sub_months'
 import format from 'date-fns/format'
-import isThisMonth from 'date-fns/is_this_month'
 
 import Page from './common/Page'
 import Header from './common/Header'
@@ -19,7 +18,7 @@ import type StructuredDate from './types'
 type Props = {
   selectedDate?: StructuredDate,
   currentDate: StructuredDate,
-  onSelect: (number) => mixed,
+  onSelect: (number, number, number) => mixed,
   onBack: () => mixed,
   onPrevMonth: () => mixed,
   onNextMonth: () => mixed
