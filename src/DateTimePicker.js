@@ -21,7 +21,10 @@ import HoursView from './HoursView'
 import MinutesView from './MinutesView'
 import Overlay from './common/Overlay'
 import DEFAULT_THEME from './themes/default'
+import { parseDateString } from './utils/string'
 import type { StructuredDate } from './types'
+
+const DEFAULT_FORMAT = 'YYYY-MM-DD HH:mm'
 
 type PossibleView = 'Years' | 'Months' | 'Days' | 'Hours' | 'Minutes'
 
@@ -36,6 +39,7 @@ type Props = {
 const VIEWS = ['Years', 'Months', 'Days', 'Hours', 'Minutes']
 
 type State = {
+  value: string,
   modalOpen: bool,
   openedView: PossibleView,
   currentDate: StructuredDate,
@@ -70,6 +74,7 @@ export default class DateTimePicker extends Component<Props, State> {
     }
 
     this.state = {
+      value: this.formatResult(selectedDate),
       modalOpen: false,
       currentDate,
       selectedDate,
@@ -84,14 +89,16 @@ export default class DateTimePicker extends Component<Props, State> {
     }), {})
   }
 
-  formatResult () {
-    const { year, month, day, hour, minute } = this.state.selectedDate || {}
+  formatResult (selectedDate: ?StructuredDate) {
+    const { year, month, day, hour, minute } = selectedDate || {}
     const date = new Date(year, month, day, hour, minute)
     if (!isValid(date)) return ''
 
-    return this.props.resultFormat
-      ? format(date, this.props.resultFormat)
-      : date.toISOString()
+    return format(date, this.outputFormat)
+  }
+
+  get outputFormat (): string {
+    return this.props.resultFormat || DEFAULT_FORMAT
   }
 
   @autobind
@@ -117,13 +124,15 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   selectYear (year: number) {
-    const { selectedDate, currentDate } = this.state
+    const { currentDate } = this.state
+    const selectedDate = {
+      ...this.state.selectedDate,
+      year
+    }
     this.focus()
     this.setState({
-      selectedDate: {
-        ...selectedDate,
-        year
-      },
+      value: this.formatResult(selectedDate),
+      selectedDate,
       currentDate: {
         ...currentDate,
         year
@@ -134,14 +143,16 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   selectMonth (month: number) {
-    const { selectedDate, currentDate } = this.state
+    const { currentDate } = this.state
+    const selectedDate = {
+      ...this.state.selectedDate,
+      year: currentDate.year,
+      month
+    }
     this.focus()
     this.setState({
-      selectedDate: {
-        ...selectedDate,
-        year: currentDate.year,
-        month
-      },
+      value: this.formatResult(selectedDate),
+      selectedDate,
       currentDate: {
         ...currentDate,
         month
@@ -152,17 +163,19 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   selectDay (day: number, month?: number, year?: number) {
-    const { selectedDate, currentDate } = this.state
-    this.focus()
+    const { currentDate } = this.state
     const newYear = typeof year === 'undefined' ? currentDate.year : year
     const newMonth = typeof month === 'undefined' ? currentDate.month : month
+    const selectedDate = {
+      ...this.state.selectedDate,
+      year: newYear,
+      month: newMonth,
+      day
+    }
+    this.focus()
     this.setState({
-      selectedDate: {
-        ...selectedDate,
-        year: newYear,
-        month: newMonth,
-        day
-      },
+      value: this.formatResult(selectedDate),
+      selectedDate,
       currentDate: {
         ...currentDate,
         year: newYear,
@@ -175,16 +188,18 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   selectHour (hour: number) {
-    const { selectedDate, currentDate } = this.state
+    const { currentDate } = this.state
+    const selectedDate = {
+      ...this.state.selectedDate,
+      year: currentDate.year,
+      month: currentDate.month,
+      day: currentDate.day,
+      hour
+    }
     this.focus()
     this.setState({
-      selectedDate: {
-        ...selectedDate,
-        year: currentDate.year,
-        month: currentDate.month,
-        day: currentDate.day,
-        hour
-      },
+      value: this.formatResult(selectedDate),
+      selectedDate,
       currentDate: {
         ...currentDate,
         hour
@@ -195,17 +210,19 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   selectMinute (minute: number) {
-    const { selectedDate, currentDate } = this.state
+    const { currentDate } = this.state
+    const selectedDate = {
+      ...this.state.selectedDate,
+      year: currentDate.year,
+      month: currentDate.month,
+      day: currentDate.day,
+      hour: currentDate.hour,
+      minute
+    }
     this.focus()
     this.setState({
-      selectedDate: {
-        ...selectedDate,
-        year: currentDate.year,
-        month: currentDate.month,
-        day: currentDate.day,
-        hour: currentDate.hour,
-        minute
-      },
+      value: this.formatResult(selectedDate),
+      selectedDate,
       currentDate: {
         ...currentDate,
         minute
@@ -338,8 +355,30 @@ export default class DateTimePicker extends Component<Props, State> {
     })
   }
 
+  @autobind
+  handleInputChange (event: Object) {
+    const { value } = event.target
+    const date = parseDateString(value, this.outputFormat)
+    if (date) {
+      const selectedDate = {
+        year: getYear(date),
+        month: getMonth(date),
+        day: getDate(date),
+        hour: getHours(date),
+        minute: getMinutes(date)
+      }
+      this.setState({
+        value,
+        selectedDate,
+        currentDate: selectedDate
+      })
+    } else {
+      this.setState({ value })
+    }
+  }
+
   render () {
-    const { modalOpen, openedView, selectedDate, currentDate } = this.state
+    const { value, modalOpen, openedView, selectedDate, currentDate } = this.state
 
     return (
       <ThemeProvider theme={ this.theme }>
@@ -348,7 +387,8 @@ export default class DateTimePicker extends Component<Props, State> {
             type="text"
             ref={ ref => { this.input = ref } }
             placeholder={ this.props.placeholder }
-            value={ this.formatResult() }
+            value={ value }
+            onChange={ this.handleInputChange }
             onFocus={ this.open }
             onBlur={ this.closeSoon }
           />
