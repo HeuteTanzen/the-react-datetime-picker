@@ -110,6 +110,7 @@ export default class DateTimePicker extends Component<Props, State> {
     this.soonTimeout = setTimeout(this.close, 330)
   }
 
+  @autobind
   focus () {
     if (this.input) this.input.focus()
   }
@@ -356,8 +357,10 @@ export default class DateTimePicker extends Component<Props, State> {
               { openedView === 'Years' &&
                 <YearsView
                   selectedDate={ selectedDate }
+                  onBack={ this.focus }
                   onSelect={ this.selectYear }
-                  currentDate={ currentDate }
+                  onPrevDecade={ this.focus }
+                  onNextDecade={ this.focus }
                 /> }
               { openedView === 'Months' &&
                 <MonthsView

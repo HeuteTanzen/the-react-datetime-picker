@@ -2,6 +2,11 @@
 import React, { Component } from 'react'
 import glamorous from 'glamorous'
 import format from 'date-fns/format'
+import getMinute from 'date-fns/get_minutes'
+import getHour from 'date-fns/get_hours'
+import getDate from 'date-fns/get_date'
+import getMonth from 'date-fns/get_month'
+import getYear from 'date-fns/get_year'
 
 import { paddedStr } from './utils/string'
 import Page from './common/Page'
@@ -34,6 +39,12 @@ export default class MinutesView extends Component<Props, State> {
     const shownDate = new Date(year, month, day)
     const selectedMinute = selectedDate ? selectedDate.minute : null
     const paddedHour = paddedStr(hour)
+    const now = new Date()
+    const currentMinute = getMinute(now)
+    const isCurrentHour = currentDate.day === getDate(now) &&
+      currentDate.month === getMonth(now) &&
+      currentDate.year === getYear(now) &&
+      currentDate.hour === getHour(now)
 
     const minutes = []
     for (let i = 0; i < 60; i += 5) {
@@ -52,7 +63,7 @@ export default class MinutesView extends Component<Props, State> {
           { minutes.map(minute => (
             <Minute
               key={ minute }
-              current={ currentDate.minute - minute >= 0 && currentDate.minute - minute < 5 }
+              current={ currentMinute - minute >= 0 && currentMinute - minute < 5 && isCurrentHour }
               selected={ minute === selectedMinute }
               onClick={ () => onSelect(minute) }
             >

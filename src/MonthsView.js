@@ -2,6 +2,8 @@
 import React, { Component } from 'react'
 import glamorous from 'glamorous'
 import format from 'date-fns/format'
+import getMonth from 'date-fns/get_month'
+import getYear from 'date-fns/get_year'
 
 import Page from './common/Page'
 import Content from './common/Content'
@@ -32,6 +34,9 @@ export default class MonthsView extends Component<Props, State> {
   render () {
     const { currentDate, selectedDate, onSelect, onBack, onPrevYear, onNextYear } = this.props
     const selectedMonth = selectedDate ? selectedDate.month : null
+    const now = new Date()
+    const currentMonth = getMonth(now)
+    const isCurrentYear = currentDate.year === getYear(now)
 
     return (
       <Page>
@@ -45,7 +50,7 @@ export default class MonthsView extends Component<Props, State> {
           { MONTHS.map(month => (
             <Month
               key={ month }
-              current={ month === currentDate.month }
+              current={ month === currentMonth && isCurrentYear }
               selected={ month === selectedMonth }
               onClick={ () => onSelect(month) }
             >

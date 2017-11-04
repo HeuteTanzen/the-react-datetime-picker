@@ -2,6 +2,10 @@
 import React, { Component } from 'react'
 import glamorous from 'glamorous'
 import format from 'date-fns/format'
+import getHour from 'date-fns/get_hours'
+import getDate from 'date-fns/get_date'
+import getMonth from 'date-fns/get_month'
+import getYear from 'date-fns/get_year'
 
 import { paddedStr } from './utils/string'
 import Page from './common/Page'
@@ -34,6 +38,11 @@ export default class HoursView extends Component<Props, State> {
     const { year, month, day } = currentDate
     const shownDate = new Date(year, month, day)
     const selectedHour = selectedDate ? selectedDate.hour : null
+    const now = new Date()
+    const currentHour = getHour(now)
+    const isCurrentDay = currentDate.day === getDate(now) &&
+      currentDate.month === getMonth(now) &&
+      currentDate.year === getYear(now)
 
     const hours = []
     for (let i = 0; i < 24; ++i) {
@@ -52,7 +61,7 @@ export default class HoursView extends Component<Props, State> {
           { hours.map(hour => (
             <Hour
               key={ hour }
-              current={ hour === currentDate.hour }
+              current={ hour === currentHour && isCurrentDay }
               selected={ hour === selectedHour }
               onClick={ () => onSelect(hour) }
             >
