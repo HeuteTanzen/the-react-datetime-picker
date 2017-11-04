@@ -1,21 +1,16 @@
 // @flow
+const borderRadius = '4px'
+const hoverColorBg = '#eee'
+
 export default {
-  outsideItem: {
-    color: '#999'
-  },
-  selectedItem: {
-    backgroundColor: '#ddddff'
-  },
-  currentItem: {
-    backgroundColor: '#ffffdd'
-  },
   Overlay: {
     backgroundColor: '#fff',
     border: '1px solid #999',
+    borderRadius,
+    overflow: 'hidden',
     width: '300px'
   },
   Body: {
-    borderTop: '1px solid #444'
   },
   Header: {
     lineHeight: '1.6',
@@ -25,23 +20,36 @@ export default {
     cursor: 'pointer',
 
     ':hover': {
-      backgroundColor: '#eeeeee'
+      backgroundColor: hoverColorBg
     }
   },
   HeaderNavigation: {
     cursor: 'pointer',
 
     ':hover': {
-      backgroundColor: '#eeeeee'
+      backgroundColor: hoverColorBg
     }
   },
   Item: {
     cursor: 'pointer',
     lineHeight: '2',
     textAlign: 'center',
+    borderRadius,
+    boxSizing: 'border-box',
 
     ':hover': {
-      backgroundColor: '#dedede'
+      backgroundColor: hoverColorBg
     }
+  },
+  outsideItem: {
+    color: '#999'
+  },
+  selectedItem: {
+    backgroundColor: '#001165',
+    color: '#fff'
+  },
+  currentItem: {
+    backgroundColor: '#5cb1bf',
+    color: '#fff'
   }
 }
