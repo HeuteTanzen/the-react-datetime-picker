@@ -50,6 +50,7 @@ export default class DateTimePicker extends Component<Props, State> {
   input: ElementRef<any>
   soonTimeout: number
   theme: Object
+  clickedInPicker: bool
 
   constructor (props: Props) {
     super(props)
@@ -89,6 +90,30 @@ export default class DateTimePicker extends Component<Props, State> {
     }), {})
   }
 
+  componentDidMount () {
+    this.input.addEventListener('focusout', this.handleFocusOut)
+    window.addEventListener('mouseup', this.handleMouseUp)
+  }
+
+  @autobind
+  handleFocusOut (event: Object) {
+    if (this.clickedInPicker) {
+      event.stopPropagation()
+      event.preventDefault()
+      event.currentTarget.focus()
+    }
+  }
+
+  @autobind
+  handleMouseDown () {
+    this.clickedInPicker = true
+  }
+
+  @autobind
+  handleMouseUp () {
+    this.clickedInPicker = false
+  }
+
   formatResult (selectedDate: ?StructuredDate) {
     const { year, month, day, hour, minute } = selectedDate || {}
     const date = new Date(year, month, day, hour, minute)
@@ -114,7 +139,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
   @autobind
   closeSoon () {
-    this.soonTimeout = setTimeout(this.close, 330)
+    this.soonTimeout = setTimeout(this.close, 10)
   }
 
   @autobind
@@ -382,7 +407,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
     return (
       <ThemeProvider theme={ this.theme }>
-        <span>
+        <span onMouseDown={ this.handleMouseDown}>
           <input
             type="text"
             autoComplete="off"
