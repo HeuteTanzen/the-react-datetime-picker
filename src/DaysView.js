@@ -113,7 +113,7 @@ export default class DaysView extends Component<Props, State> {
                 <Day
                   key={ day.day }
                   { ...day }
-                  onClick={ () => onSelect(day.day, day.month, day.year) }
+                  onMouseDown={ () => onSelect(day.day, day.month, day.year) }
                 >
                   { day.day }
                 </Day>

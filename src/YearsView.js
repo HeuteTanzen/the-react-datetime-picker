@@ -78,7 +78,7 @@ export default class YearsView extends Component<Props, State> {
               key={ year }
               current={ year === currentYear }
               selected={ year === selectedYear }
-              onClick={ () => this.props.onSelect(year) }
+              onMouseDown={ () => this.props.onSelect(year) }
             >
               { year }
             </Year>

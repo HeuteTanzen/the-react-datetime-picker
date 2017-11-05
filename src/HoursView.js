@@ -63,7 +63,7 @@ export default class HoursView extends Component<Props, State> {
               key={ hour }
               current={ hour === currentHour && isCurrentDay }
               selected={ hour === selectedHour }
-              onClick={ () => onSelect(hour) }
+              onMouseDown={ () => onSelect(hour) }
             >
               { paddedStr(hour) }:00
             </Hour>

@@ -52,7 +52,7 @@ export default class MonthsView extends Component<Props, State> {
               key={ month }
               current={ month === currentMonth && isCurrentYear }
               selected={ month === selectedMonth }
-              onClick={ () => onSelect(month) }
+              onMouseDown={ () => onSelect(month) }
             >
               { format(new Date(currentDate.year, month), 'MMM') }
             </Month>

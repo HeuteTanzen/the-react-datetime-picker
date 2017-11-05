@@ -65,7 +65,7 @@ export default class MinutesView extends Component<Props, State> {
               key={ minute }
               current={ currentMinute - minute >= 0 && currentMinute - minute < 5 && isCurrentHour }
               selected={ minute === selectedMinute }
-              onClick={ () => onSelect(minute) }
+              onMouseDown={ () => onSelect(minute) }
             >
               { paddedHour }:{ paddedStr(minute) }
             </Minute>
