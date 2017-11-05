@@ -385,6 +385,7 @@ export default class DateTimePicker extends Component<Props, State> {
         <span>
           <input
             type="text"
+            autoComplete="off"
             ref={ ref => { this.input = ref } }
             placeholder={ this.props.placeholder }
             value={ value }
