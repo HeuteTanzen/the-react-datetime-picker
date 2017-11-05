@@ -3,10 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 // const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
 
 module.exports = {
-  entry: path.join(__dirname, '/index.js'),
+  entry: {
+    index: path.join(__dirname, '/index.js'),
+    example: path.join(__dirname, '/example.js')
+  },
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'example_bundle.js'
+    filename: '[name].js'
   },
   module: {
     rules: [
