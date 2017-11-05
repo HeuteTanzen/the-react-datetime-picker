@@ -31,6 +31,7 @@ type PossibleView = 'Years' | 'Months' | 'Days' | 'Hours' | 'Minutes'
 type Props = {
   theme?: Object,
   selectedDate?: Date,
+  onChange?: Function,
   placeholder?: string,
   resultFormat?: string,
   initialView?: PossibleView
@@ -148,6 +149,15 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   @autobind
+  triggerChange () {
+    const { onChange } = this.props
+    const { year, month, day, hour, minute } = this.state.selectedDate || {}
+    const date = new Date(year, month, day, hour, minute)
+
+    onChange && onChange(date)
+  }
+
+  @autobind
   selectYear (year: number) {
     const { currentDate } = this.state
     const selectedDate = {
@@ -163,7 +173,7 @@ export default class DateTimePicker extends Component<Props, State> {
         year
       },
       openedView: 'Months'
-    })
+    }, this.triggerChange)
   }
 
   @autobind
@@ -183,7 +193,7 @@ export default class DateTimePicker extends Component<Props, State> {
         month
       },
       openedView: 'Days'
-    })
+    }, this.triggerChange)
   }
 
   @autobind
@@ -208,7 +218,7 @@ export default class DateTimePicker extends Component<Props, State> {
         day
       },
       openedView: 'Hours'
-    })
+    }, this.triggerChange)
   }
 
   @autobind
@@ -230,7 +240,7 @@ export default class DateTimePicker extends Component<Props, State> {
         hour
       },
       openedView: 'Minutes'
-    })
+    }, this.triggerChange)
   }
 
   @autobind
@@ -252,7 +262,7 @@ export default class DateTimePicker extends Component<Props, State> {
         ...currentDate,
         minute
       }
-    })
+    }, this.triggerChange)
   }
 
   @autobind
