@@ -31,6 +31,7 @@ class Exmaple1 extends Component<*, Example1State> {
           resultFormat="DD.MM.YYYY HH:mm"
           selectedDate={ this.state.value }
           onChange={ this.handleChange }
+          inputProps={ { name: 'my-input' } }
           initialView="Days"
         />
         <div><strong>Choosen value:</strong> { this.state.value.toISOString() }</div>

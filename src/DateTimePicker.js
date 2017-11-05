@@ -30,6 +30,7 @@ type PossibleView = 'Years' | 'Months' | 'Days' | 'Hours' | 'Minutes'
 
 type Props = {
   theme?: Object,
+  inputProps?: Object,
   selectedDate?: Date,
   onChange?: Function,
   placeholder?: string,
@@ -421,8 +422,9 @@ export default class DateTimePicker extends Component<Props, State> {
           <input
             type="text"
             autoComplete="off"
-            ref={ ref => { this.input = ref } }
             placeholder={ this.props.placeholder }
+            { ...this.props.inputProps }
+            ref={ ref => { this.input = ref } }
             value={ value }
             onChange={ this.handleInputChange }
             onFocus={ this.open }
