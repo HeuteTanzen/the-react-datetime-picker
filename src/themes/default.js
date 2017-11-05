@@ -1,4 +1,5 @@
 // @flow
+const boxSizing = 'border-box'
 const borderRadius = '4px'
 const hoverColorBg = '#eee'
 
@@ -7,6 +8,8 @@ export default {
     backgroundColor: '#fff',
     border: '1px solid #999',
     borderRadius,
+    boxSizing,
+    padding: '4px',
     overflow: 'hidden',
     width: '300px'
   },
@@ -35,7 +38,7 @@ export default {
     lineHeight: '2',
     textAlign: 'center',
     borderRadius,
-    boxSizing: 'border-box',
+    boxSizing,
 
     ':hover': {
       backgroundColor: hoverColorBg
@@ -46,7 +49,11 @@ export default {
   },
   selectedItem: {
     backgroundColor: '#001165',
-    color: '#fff'
+    color: '#fff',
+
+    ':hover': {
+      backgroundColor: '#001165'
+    }
   },
   currentItem: {
     backgroundColor: '#5cb1bf',
