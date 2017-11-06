@@ -1,12 +1,14 @@
 {
-  "name": "react-datetime-picker",
+  "name": "the-react-datetime-picker",
   "version": "0.1.0",
   "description": "The only react datepicker that really works on desktop and mobile.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --hot --host '0.0.0.0'",
-    "build": "webpack"
+    "build": "webpack",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "datepicker",
