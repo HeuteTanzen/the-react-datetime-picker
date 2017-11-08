@@ -60,13 +60,7 @@ export default class DateTimePicker extends Component<Props, State> {
     const selectedDateObj = props.selectedDate || new Date()
 
     if (props.selectedDate) {
-      selectedDate = {
-        year: getYear(selectedDateObj),
-        month: getMonth(selectedDateObj),
-        day: getDate(selectedDateObj),
-        hour: getHours(selectedDateObj),
-        minute: getMinutes(selectedDateObj)
-      }
+      selectedDate = this.processInputDate(props.selectedDate)
     }
     const currentDate = {
       year: getYear(selectedDateObj),
@@ -92,9 +86,34 @@ export default class DateTimePicker extends Component<Props, State> {
     }), {})
   }
 
+  processInputDate (date: Date) {
+    return {
+      year: getYear(date),
+      month: getMonth(date),
+      day: getDate(date),
+      hour: getHours(date),
+      minute: getMinutes(date)
+    }
+  }
+
   componentDidMount () {
     this.input.addEventListener('focusout', this.handleFocusOut)
     window.addEventListener('mouseup', this.handleMouseUp)
+  }
+
+  componentDidUpdate (oldProps: Props) {
+    if (
+      this.props.selectedDate &&
+      this.props.selectedDate !== oldProps.selectedDate &&
+      this.props.selectedDate.getTime() !== (oldProps.selectedDate && oldProps.selectedDate.getTime())
+    ) {
+      const selectedDate = this.processInputDate(this.props.selectedDate)
+      this.setState({
+        value: this.formatResult(selectedDate),
+        currentDate: selectedDate,
+        selectedDate
+      })
+    }
   }
 
   @autobind
