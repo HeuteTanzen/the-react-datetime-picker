@@ -150,9 +150,9 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   @autobind
-  triggerChange () {
+  triggerChange (selectedDate?: StructuredDate) {
     const { onChange } = this.props
-    const { year, month, day, hour, minute } = this.state.selectedDate || {}
+    const { year, month, day, hour, minute } = selectedDate || {}
     const date = new Date(year, month, day, hour, minute)
 
     onChange && onChange(date)
@@ -174,7 +174,8 @@ export default class DateTimePicker extends Component<Props, State> {
         year
       },
       openedView: 'Months'
-    }, this.triggerChange)
+    })
+    this.triggerChange(selectedDate)
   }
 
   @autobind
@@ -194,7 +195,8 @@ export default class DateTimePicker extends Component<Props, State> {
         month
       },
       openedView: 'Days'
-    }, this.triggerChange)
+    })
+    this.triggerChange(selectedDate)
   }
 
   @autobind
@@ -219,7 +221,8 @@ export default class DateTimePicker extends Component<Props, State> {
         day
       },
       openedView: 'Hours'
-    }, this.triggerChange)
+    })
+    this.triggerChange(selectedDate)
   }
 
   @autobind
@@ -241,7 +244,8 @@ export default class DateTimePicker extends Component<Props, State> {
         hour
       },
       openedView: 'Minutes'
-    }, this.triggerChange)
+    })
+    this.triggerChange(selectedDate)
   }
 
   @autobind
@@ -263,7 +267,8 @@ export default class DateTimePicker extends Component<Props, State> {
         ...currentDate,
         minute
       }
-    }, this.triggerChange)
+    })
+    this.triggerChange(selectedDate)
   }
 
   @autobind
@@ -408,6 +413,7 @@ export default class DateTimePicker extends Component<Props, State> {
         selectedDate,
         currentDate: selectedDate
       })
+      this.triggerChange(selectedDate)
     } else {
       this.setState({ value })
     }
