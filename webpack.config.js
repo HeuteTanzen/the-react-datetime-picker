@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const pkg = require('./package.json')
 // const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
 
 module.exports = {
@@ -9,6 +10,9 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, '/dist'),
+    library: pkg.name,
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
     filename: '[name].js'
   },
   module: {
