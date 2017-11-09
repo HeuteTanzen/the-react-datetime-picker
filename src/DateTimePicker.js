@@ -22,6 +22,7 @@ import MinutesView from './MinutesView'
 import Overlay from './common/Overlay'
 import DEFAULT_THEME from './themes/default'
 import { parseDateString } from './utils/string'
+import { structToDate, dateToStruct } from './utils/date'
 import type { StructuredDate } from './types'
 
 const DEFAULT_FORMAT = 'YYYY-MM-DD HH:mm'
@@ -62,13 +63,7 @@ export default class DateTimePicker extends Component<Props, State> {
     if (props.selectedDate) {
       selectedDate = this.processInputDate(props.selectedDate)
     }
-    const currentDate = {
-      year: getYear(selectedDateObj),
-      month: getMonth(selectedDateObj),
-      day: getDate(selectedDateObj),
-      hour: getHours(selectedDateObj),
-      minute: getMinutes(selectedDateObj)
-    }
+    const currentDate = dateToStruct(selectedDateObj)
 
     this.state = {
       value: this.formatResult(selectedDate),
@@ -136,8 +131,7 @@ export default class DateTimePicker extends Component<Props, State> {
   }
 
   formatResult (selectedDate: ?StructuredDate) {
-    const { year, month, day, hour, minute } = selectedDate || {}
-    const date = new Date(year, month, day, hour, minute)
+    const date = structToDate(selectedDate)
     if (!isValid(date)) return ''
 
     return format(date, this.outputFormat)
@@ -171,10 +165,8 @@ export default class DateTimePicker extends Component<Props, State> {
   @autobind
   triggerChange (selectedDate?: StructuredDate) {
     const { onChange } = this.props
-    const { year, month, day, hour, minute } = selectedDate || {}
-    const date = new Date(year, month, day, hour, minute)
 
-    onChange && onChange(date)
+    onChange && onChange(structToDate(selectedDate))
   }
 
   @autobind
