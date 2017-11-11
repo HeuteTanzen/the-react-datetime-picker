@@ -1,7 +1,8 @@
 // @flow
-export const pickerItem = ({ outside, selected, current, theme }: Object) => ({
+export const pickerItem = ({ outside, selected, current, outOfRange, theme }: Object) => ({
   ...theme.Item,
   ...(outside ? theme.outsideItem : {}),
   ...(current ? theme.currentItem : {}),
-  ...(selected ? theme.selectedItem : {})
+  ...(selected ? theme.selectedItem : {}),
+  ...(outOfRange ? theme.outsideRangeItem : {})
 })

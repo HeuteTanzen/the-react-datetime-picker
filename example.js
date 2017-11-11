@@ -84,3 +84,18 @@ render(<div>
     theme={ theme }
   />
 </div>, document.getElementById('example3'))
+
+render(<div>
+  <h1>Example with min and max date</h1>
+  <label htmlFor="example4">Pick a date and time within next 30 days: </label>
+  <DateTimePicker
+    id="example4"
+    placeholder="DD.MM.YYYY HH:mm"
+    resultFormat="DD.MM.YYYY HH:mm"
+    initialView="Days"
+    selectedDate={ addDays(new Date(), 1) }
+    min={ new Date() }
+    max={ addDays(new Date(), 30) }
+    theme={ theme }
+  />
+</div>, document.getElementById('example4'))

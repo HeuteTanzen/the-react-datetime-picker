@@ -20,7 +20,8 @@ type Props = {
   onSelect: (number) => mixed,
   onBack: () => mixed,
   onPrevDay: () => mixed,
-  onNextDay: () => mixed
+  onNextDay: () => mixed,
+  isOutOfRange: (number, number, number, number) => bool
 }
 
 // TODO: remove state stuff from all views
@@ -34,7 +35,7 @@ export default class HoursView extends Component<Props, State> {
   }
 
   render () {
-    const { currentDate, selectedDate, onSelect, onBack, onPrevDay, onNextDay } = this.props
+    const { currentDate, selectedDate, onSelect, onBack, onPrevDay, onNextDay, isOutOfRange } = this.props
     const { year, month, day } = currentDate
     const shownDate = new Date(year, month, day)
     const selectedHour = selectedDate ? selectedDate.hour : null
@@ -63,6 +64,7 @@ export default class HoursView extends Component<Props, State> {
               key={ hour }
               current={ hour === currentHour && isCurrentDay }
               selected={ hour === selectedHour }
+              outOfRange={ isOutOfRange(currentDate.year, currentDate.month, currentDate.day, hour) }
               onMouseDown={ () => onSelect(hour) }
             >
               { paddedStr(hour) }:00

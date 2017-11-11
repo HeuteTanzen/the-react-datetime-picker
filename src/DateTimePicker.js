@@ -22,7 +22,7 @@ import MinutesView from './MinutesView'
 import Overlay from './common/Overlay'
 import DEFAULT_THEME from './themes/default'
 import { parseDateString } from './utils/string'
-import { structToDate, dateToStruct } from './utils/date'
+import { structToDate, dateToStruct, isOutOfRange } from './utils/date'
 import type { StructuredDate } from './types'
 
 const DEFAULT_FORMAT = 'YYYY-MM-DD HH:mm'
@@ -36,7 +36,11 @@ type Props = {
   onChange?: Function,
   placeholder?: string,
   resultFormat?: string,
-  initialView?: PossibleView
+  initialView?: PossibleView,
+  // Minimum pickable date and time
+  min?: Date,
+  // Maximum pickable date and time
+  max?: Date
 }
 
 const VIEWS = ['Years', 'Months', 'Days', 'Hours', 'Minutes']
@@ -430,6 +434,13 @@ export default class DateTimePicker extends Component<Props, State> {
     }
   }
 
+  @autobind
+  isOutOfRange (year: number, month?:number, day?: number, hour?: number, minute?:number): bool {
+    const { min, max } = this.props
+
+    return isOutOfRange(min, max, year, month, day, hour, minute)
+  }
+
   render () {
     const { value, modalOpen, openedView, selectedDate, currentDate } = this.state
 
@@ -456,6 +467,7 @@ export default class DateTimePicker extends Component<Props, State> {
                   onSelect={ this.selectYear }
                   onPrevDecade={ this.focus }
                   onNextDecade={ this.focus }
+                  isOutOfRange={ this.isOutOfRange }
                 /> }
               { openedView === 'Months' &&
                 <MonthsView
@@ -465,6 +477,7 @@ export default class DateTimePicker extends Component<Props, State> {
                   currentDate={ currentDate }
                   onPrevYear={ this.goToPrevYear }
                   onNextYear={ this.goToNextYear }
+                  isOutOfRange={ this.isOutOfRange }
                 /> }
               { openedView === 'Days' &&
                 <DaysView
@@ -474,6 +487,7 @@ export default class DateTimePicker extends Component<Props, State> {
                   currentDate={ currentDate }
                   onPrevMonth={ this.goToPrevMonth }
                   onNextMonth={ this.goToNextMonth }
+                  isOutOfRange={ this.isOutOfRange }
                 /> }
               { openedView === 'Hours' &&
                 <HoursView
@@ -483,6 +497,7 @@ export default class DateTimePicker extends Component<Props, State> {
                   currentDate={ currentDate }
                   onPrevDay={ this.goToPrevDay }
                   onNextDay={ this.goToNextDay }
+                  isOutOfRange={ this.isOutOfRange }
                 /> }
               { openedView === 'Minutes' &&
                 <MinutesView
@@ -492,6 +507,7 @@ export default class DateTimePicker extends Component<Props, State> {
                   currentDate={ currentDate }
                   onPrevHour={ this.goToPrevHour }
                   onNextHour={ this.goToNextHour }
+                  isOutOfRange={ this.isOutOfRange }
                 /> }
             </Overlay>
           }

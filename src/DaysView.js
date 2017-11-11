@@ -21,7 +21,8 @@ type Props = {
   onSelect: (number, number, number) => mixed,
   onBack: () => mixed,
   onPrevMonth: () => mixed,
-  onNextMonth: () => mixed
+  onNextMonth: () => mixed,
+  isOutOfRange: (number, number, number) => bool
 }
 
 type State = {
@@ -35,7 +36,7 @@ export default class DaysView extends Component<Props, State> {
 
   // @TODO: create tests and refactor this afterwords to make it more concise
   createWeeks (firstDayOfWeek: number = 0) {
-    const { selectedDate, currentDate } = this.props
+    const { selectedDate, currentDate, isOutOfRange } = this.props
     const { month, year } = currentDate
     const firstDayOfMonth = new Date(year, month, 1)
     const missingDays = getDay(firstDayOfMonth) - firstDayOfWeek
@@ -65,7 +66,7 @@ export default class DaysView extends Component<Props, State> {
         const day = daysOfLastMonth - i
         const selected = selectedDate && selectedDate.month === month && selectedDate.year === year && selectedDate.day === day
         const current = thisMonth === month && thisYear === year && today === day
-        weeks[m].push({ day, month, year, selected, current, outside: true })
+        weeks[m].push({ day, month, year, selected, current, outside: true, outOfRange: isOutOfRange(year, month, day) })
       }
     }
     if (daysInThisMonth > 0) {
@@ -75,7 +76,7 @@ export default class DaysView extends Component<Props, State> {
         if (weeks[m].length === 7) ++m
         const selected = selectedDate && selectedDate.month === month && selectedDate.year === year && selectedDate.day === day
         const current = thisMonth === month && thisYear === year && today === day
-        weeks[m].push({ day, month, year, selected, current })
+        weeks[m].push({ day, month, year, selected, current, outOfRange: isOutOfRange(year, month, day) })
       }
     }
     if (daysToAddAfter > 0) {
@@ -85,7 +86,7 @@ export default class DaysView extends Component<Props, State> {
         if (weeks[m].length === 7) ++m
         const selected = selectedDate && selectedDate.month === month && selectedDate.year === year && selectedDate.day === day
         const current = thisMonth === month && thisYear === year && today === day
-        weeks[m].push({ day, month, year, selected, current, outside: true })
+        weeks[m].push({ day, month, year, selected, current, outside: true, outOfRange: isOutOfRange(year, month, day) })
       }
     }
     return weeks

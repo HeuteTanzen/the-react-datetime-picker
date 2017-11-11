@@ -19,7 +19,8 @@ type Props = {
   onSelect: (number) => mixed,
   onBack?: () => mixed,
   onPrevYear: () => mixed,
-  onNextYear: () => mixed
+  onNextYear: () => mixed,
+  isOutOfRange: (number, number) => bool
 }
 
 type State = {
@@ -32,7 +33,7 @@ export default class MonthsView extends Component<Props, State> {
   }
 
   render () {
-    const { currentDate, selectedDate, onSelect, onBack, onPrevYear, onNextYear } = this.props
+    const { currentDate, selectedDate, onSelect, onBack, onPrevYear, onNextYear, isOutOfRange } = this.props
     const selectedMonth = selectedDate ? selectedDate.month : null
     const now = new Date()
     const currentMonth = getMonth(now)
@@ -52,6 +53,7 @@ export default class MonthsView extends Component<Props, State> {
               key={ month }
               current={ month === currentMonth && isCurrentYear }
               selected={ month === selectedMonth }
+              outOfRange={ isOutOfRange(currentDate.year, month) }
               onMouseDown={ () => onSelect(month) }
             >
               { format(new Date(currentDate.year, month), 'MMM') }

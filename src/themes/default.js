@@ -44,6 +44,11 @@ export default {
       backgroundColor: hoverColorBg
     }
   },
+  outsideRangeItem: {
+    color: '#ccc',
+    cursor: 'normal',
+    ':hover': {}
+  },
   outsideItem: {
     color: '#999'
   },

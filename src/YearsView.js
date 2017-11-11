@@ -15,7 +15,8 @@ type Props = {
   onSelect: (number) => mixed,
   onBack: () => mixed,
   onPrevDecade: () => mixed,
-  onNextDecade: () => mixed
+  onNextDecade: () => mixed,
+  isOutOfRange: (any) => bool
 }
 
 type State = {
@@ -59,7 +60,7 @@ export default class YearsView extends Component<Props, State> {
   }
 
   render () {
-    const { selectedDate, onBack } = this.props
+    const { selectedDate, onBack, isOutOfRange } = this.props
     const currentYear = getYear(new Date())
     const selectedYear = selectedDate ? selectedDate.year : currentYear
     const years = getYears(this.state.pageStartYear)
@@ -78,6 +79,7 @@ export default class YearsView extends Component<Props, State> {
               key={ year }
               current={ year === currentYear }
               selected={ year === selectedYear }
+              outOfRange={ isOutOfRange(year) }
               onMouseDown={ () => this.props.onSelect(year) }
             >
               { year }
