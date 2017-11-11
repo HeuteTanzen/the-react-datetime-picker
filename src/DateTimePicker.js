@@ -303,10 +303,10 @@ export default class DateTimePicker extends Component<Props, State> {
   @autobind
   goToNextMonth () {
     this.focus()
-    const { selectedDate, currentDate } = this.state
+    const { currentDate } = this.state
     const month = (currentDate.month + 1) % 12
-    const year = selectedDate
-      ? (month === 0 ? selectedDate.year + 1 : selectedDate.year)
+    const year = currentDate
+      ? (month === 0 ? currentDate.year + 1 : currentDate.year)
       : currentDate.year
     this.setState({
       currentDate: {
