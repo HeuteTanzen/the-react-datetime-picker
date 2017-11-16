@@ -37,8 +37,8 @@ export const parseDateString = (str: string, format: string): ?Date => {
       parseInt(tokens.Y.join(''), 10),
       parseInt(tokens.M.join(''), 10) - 1,
       parseInt(tokens.D.join(''), 10),
-      parseInt(tokens.H.join(''), 10),
-      parseInt(tokens.m.join(''), 10)
+      parseInt(tokens.H.join(''), 10) || 0,
+      parseInt(tokens.m.join(''), 10) || 0
     )
     : null
 }
