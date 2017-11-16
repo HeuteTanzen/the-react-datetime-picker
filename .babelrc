@@ -7,5 +7,10 @@
     "transform-class-properties",
     "transform-decorators-legacy",
     "transform-object-rest-spread"
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": ["env", "react"]
+    }
+  }
 }
