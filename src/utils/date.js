@@ -39,24 +39,24 @@ export const isOutOfRange = (min: ?Date, max: ?Date, year: number, month?:number
   if (typeof month === 'undefined') {
     const minTime = min ? startOfYear(min).getTime() : 0
     const maxTime = max ? endOfYear(max).getTime() : 0
-    return (min && time < minTime) || (max && time > maxTime)
+    return (min && time < minTime) || (max && time > maxTime) || false
   }
   if (typeof day === 'undefined') {
     const minTime = min ? startOfMonth(min).getTime() : 0
     const maxTime = max ? endOfMonth(max).getTime() : 0
-    return (min && time < minTime) || (max && time > maxTime)
+    return (min && time < minTime) || (max && time > maxTime) || false
   }
   if (typeof hour === 'undefined') {
     const minTime = min ? startOfDay(min).getTime() : 0
     const maxTime = max ? endOfDay(max).getTime() : 0
-    return (min && time < minTime) || (max && time > maxTime)
+    return (min && time < minTime) || (max && time > maxTime) || false
   }
   if (typeof minute === 'undefined') {
     const minTime = min ? startOfHour(min).getTime() : 0
     const maxTime = max ? endOfHour(max).getTime() : 0
-    return (min && time < minTime) || (max && time > maxTime)
+    return (min && time < minTime) || (max && time > maxTime) || false
   }
   const minTime = min ? startOfMinute(min).getTime() : 0
   const maxTime = max ? endOfMinute(max).getTime() : 0
-  return (min && time < minTime) || (max && time > maxTime)
+  return (min && time < minTime) || (max && time > maxTime) || false
 }
